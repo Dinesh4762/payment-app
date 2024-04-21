@@ -9,6 +9,7 @@ function App() {
   return (
     <div className="bg-[#b7b7b7] border-2 flex justify-center items-center h-svh max-w-[400px] mx-auto">
       <Routes>
+        <Route  path="/" element={<Signin/>}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/signin" element={<Signin />}></Route>
         <Route path="/dashboard" element={<Dashboard />}></Route>
