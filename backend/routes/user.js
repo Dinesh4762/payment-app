@@ -6,7 +6,9 @@ const { JWT_SECRET } = require("../config");
 const authMiddleware = require("../middleware");
 const router = express.Router();
 
-
+router.get("/me",(req,res)=>{
+  
+})
 router.post("/signup", async (req, res) => {
   const inputSchema = z.object({
     username: z.string().email(),

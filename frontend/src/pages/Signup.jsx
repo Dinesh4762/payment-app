@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Signup = () => {
@@ -88,9 +88,9 @@ const Signup = () => {
       </button>
       <p className="text-sm py-2">
         Already have an account brother?
-        <a href="/signin" className="underline">
+        <Link to="/signin" className="underline cursor-pointer">
           Signin
-        </a>
+        </Link>
       </p>
     </div>
   );
