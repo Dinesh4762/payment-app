@@ -12,7 +12,7 @@ const Signup = () => {
 
   const onclickHandle = () => {
     axios
-      .post("http://localhost:3000/api/v1/user/signup", {
+      .post("https://paytm-backend-6q0o.onrender.com/api/v1/user/signup", {
         username,
         password,
         firstName,
@@ -23,9 +23,9 @@ const Signup = () => {
         setlastName("");
         if (response.data.token) {
           localStorage.setItem("token", response.data.token);
-          localStorage.setItem("firstName",response.data.firstName)
-          console.log("user created")
-          navigate("/dashboard")
+          localStorage.setItem("firstName", response.data.firstName);
+          console.log("user created");
+          navigate("/dashboard");
         }
       })
       .catch((e) => console.log(e));
@@ -87,7 +87,7 @@ const Signup = () => {
         SignUp
       </button>
       <p className="text-sm py-2">
-        Already have an account?
+        Already have an account brother?
         <a href="/signin" className="underline">
           Signin
         </a>

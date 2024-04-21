@@ -8,19 +8,22 @@ const Signin = () => {
  const navigate = useNavigate();
 
   const onClickHandler = () => {
-    axios.post("http://localhost:3000/api/v1/user/signin", {
-      username,
-      password
-    }).then((res)=>{
-      localStorage.setItem("token",res.data.token)
-      localStorage.setItem("firstName", res.data.firstName);
-      navigate("/dashboard")
-      setUsername("")
-      setPassword("");
-    }).catch((e)=>{
-      console.log(e)
-      alert(e.response.data.msg);
-    })
+    axios
+      .post("https://paytm-backend-6q0o.onrender.com/api/v1/user/signin", {
+        username,
+        password,
+      })
+      .then((res) => {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("firstName", res.data.firstName);
+        navigate("/dashboard");
+        setUsername("");
+        setPassword("");
+      })
+      .catch((e) => {
+        console.log(e);
+        alert(e.response.data.msg);
+      });
   };
   return (
     <div className="bg-white max-w-[350px] flex flex-col gap-1 items-center rounded py-2 px-4">

@@ -9,31 +9,37 @@ const Dashboard = () => {
   const [filter, setFilter] = useState("");
   const [balance, setBalance] = useState();
   const accountOwner = localStorage.getItem("firstName");
-  
+
   useEffect(()=>{
-   axios.get("http://localhost:3000/api/v1/account/balance",{
-    headers:{
-      Authorization: "Bearer "+ localStorage.getItem("token")
-    }
-   }).then((res)=>{
-      setBalance(res.data.balance)
-   })
+   axios
+     .get("https://paytm-backend-6q0o.onrender.com/api/v1/account/balance", {
+       headers: {
+         Authorization: "Bearer " + localStorage.getItem("token"),
+       },
+     })
+     .then((res) => {
+       setBalance(res.data.balance);
+     });
    console.log("balance fetched") 
 },[])
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/v1/user/bulk?filter="+ filter, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      .get(
+        "https://paytm-backend-6q0o.onrender.com/api/v1/user/bulk?filter=" +
+          filter,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then((res) => {
-        console.log(res)
+        console.log(res);
         setUsers(res.data.user);
         setLoading(false);
       })
-      
-      .catch((e)=> console.log(e));
+
+      .catch((e) => console.log(e));
   }, [filter]);
   return (
     <div className="bg-white w-full flex flex-col gap-1 rounded py-2 px-4 h-full relative">

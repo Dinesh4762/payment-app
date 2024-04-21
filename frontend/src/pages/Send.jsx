@@ -29,6 +29,7 @@ const Send = () => {
           <span className="text-xs font-medium">Amount (in Rs): </span>
           <input
             type="number"
+            value={amount}
             pattern="[0-9]*"
             inputMode="numeric"
             className="border rounded px-2 py-1 font-medium"
@@ -43,7 +44,7 @@ const Send = () => {
             setLoading(true);
             axios
               .post(
-                "http://localhost:3000/api/v1/account/transfer",
+                "https://paytm-backend-6q0o.onrender.com/api/v1/account/transfer",
                 {
                   to: id,
                   amount,
@@ -58,16 +59,18 @@ const Send = () => {
                 if (res.data.success) {
                   setLoading(false);
                   alert("payment done!");
+                  setAmount("");
                 }
-              }).catch((e)=> {
+              })
+              .catch((e) => {
                 // console.log(e)
-                setLoading(false)  
-                alert(e.response.data.message)
-              } )
+                setLoading(false);
+                alert(e.response.data.message);
+              });
           }}
         >{
           loading?(
-            <img src={loader} alt="loading" className="mx-auto my-auto invert"/>
+            <img src={loader} alt="loading" className="mx-auto my-auto invert w-4 h-4"/>
           ):("Initiate Transfer")
         }
         </button>
