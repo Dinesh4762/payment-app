@@ -41,6 +41,10 @@ const Send = () => {
           className="bg-sky-500 hover:bg-sky-700 text-white rounded-[3px] text-xs px-3 py-2 font-medium mt-2"
           disabled={loading}
           onClick={() => {
+            if(!amount){
+              alert("Amount cannot be null!")
+              return;
+            }
             setLoading(true);
             axios
               .post(
@@ -58,12 +62,13 @@ const Send = () => {
               .then((res) => {
                 if (res.data.success) {
                   setLoading(false);
-                  alert("payment done!");
                   setAmount("");
+                  alert("payment done!");
+                  navigate("/dashboard")
                 }
               })
               .catch((e) => {
-                // console.log(e)
+                console.log(e)
                 setLoading(false);
                 alert(e.response.data.msg);
               });

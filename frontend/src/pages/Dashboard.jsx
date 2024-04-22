@@ -12,10 +12,12 @@ const Dashboard = () => {
   const accountOwner = localStorage.getItem("firstName");
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  if (!token) {
-    navigate("/signin");
-  }
+
   useEffect(() => {
+    if (!token) {
+      navigate("/signin");
+      return; 
+    }
     axios
       .get("https://paytm-backend-6q0o.onrender.com")
       .then(() => {

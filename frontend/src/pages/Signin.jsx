@@ -6,11 +6,11 @@ const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
  const navigate = useNavigate();
+ const token = localStorage.getItem("token");
 
  useEffect(() => {
    axios.get("https://paytm-backend-6q0o.onrender.com")
    .then((res)=>{
-    const token = localStorage.getItem("token");
     console.log(token);
     if (!token) {
       return;
