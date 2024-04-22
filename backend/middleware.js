@@ -12,6 +12,7 @@ function authMiddleware(req,res,next){
      req.userId = encoded.userId;
      next();
    } catch (error) {
+    console.log(error);
     res.status(403).json({
       authenticated: "false",
       msg:"Authorization failed! Sign in again."})

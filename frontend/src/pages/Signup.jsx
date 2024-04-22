@@ -4,11 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Signup = () => {
-  const navigate = useNavigate();
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
 
   const onclickHandle = () => {
@@ -24,8 +24,6 @@ const Signup = () => {
         lastName,
       })
       .then((response) => {
-        setfirstName("");
-        setlastName("");
         if (response.data.token) {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("firstName", response.data.firstName);
@@ -33,7 +31,10 @@ const Signup = () => {
           navigate("/dashboard");
         }
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e.response.data.msg);
+        alert(e.response.data.msg);
+      });
   };
   return (
     <div className="bg-white max-w-[350px] flex flex-col gap-1 items-center rounded py-2 px-4">

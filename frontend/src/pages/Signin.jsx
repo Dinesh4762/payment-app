@@ -8,25 +8,31 @@ const Signin = () => {
  const navigate = useNavigate();
 
  useEffect(() => {
-   axios.get("https://paytm-backend-6q0o.onrender.com");
-   const token = localStorage.getItem("token");
-   console.log(token) 
-   if (!token) {
-     return;
-   }
-   axios
-     .get("https://paytm-backend-6q0o.onrender.com/api/v1/user/me", {
-       headers: {
-         Authorization: "Bearer " + token,
-       },
-     })
-     .then((res) => {
-       navigate("/dashboard");
-     })
-     .catch((e) => {
-      console.log(e)
-      alert(e?.response.data.msg)
-     });
+   axios.get("https://paytm-backend-6q0o.onrender.com")
+   .then((res)=>{
+    const token = localStorage.getItem("token");
+    console.log(token);
+    if (!token) {
+      return;
+    }
+    axios
+      .get("https://paytm-backend-6q0o.onrender.com/api/v1/user/me", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        navigate("/dashboard");
+      })
+      .catch((e) => {
+        console.log(e.response.data.msg);
+        alert(e.response.data.msg);
+      });
+   })
+   .catch((e)=>{
+    alert("Please wait for a minute,the server is restarting!")
+   })
+   
  }, []);
 
   const onClickHandler = () => {
@@ -47,7 +53,7 @@ const Signin = () => {
         setPassword("");
       })
       .catch((e) => {
-        console.log(e);
+        console.log(e.response.data.msg);
         alert(e.response.data.msg);
       });
   };

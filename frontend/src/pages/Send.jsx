@@ -65,7 +65,7 @@ const Send = () => {
               .catch((e) => {
                 // console.log(e)
                 setLoading(false);
-                alert(e.response.data.message);
+                alert(e.response.data.msg);
               });
           }}
         >{

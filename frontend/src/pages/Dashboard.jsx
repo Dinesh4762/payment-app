@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import User from "../components/User";
 import loader from "../assets/loader.svg";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -9,39 +10,72 @@ const Dashboard = () => {
   const [filter, setFilter] = useState("");
   const [balance, setBalance] = useState();
   const accountOwner = localStorage.getItem("firstName");
-
-  useEffect(()=>{
-    const token = localStorage.getItem("token");
-   axios
-     .get("https://paytm-backend-6q0o.onrender.com/api/v1/account/balance", {
-       headers: {
-         Authorization: "Bearer " + token,
-       },
-     })
-     .then((res) => {
-       setBalance(res.data.balance);
-     });
-   console.log("balance fetched") 
-
-},[])
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  if (!token) {
+    navigate("/signin");
+  }
   useEffect(() => {
     axios
-      .get(
-        "https://paytm-backend-6q0o.onrender.com/api/v1/user/bulk?filter=" +
-          filter,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        setUsers(res.data.user);
-        setLoading(false);
+      .get("https://paytm-backend-6q0o.onrender.com")
+      .then(() => {
+        axios
+          .get("https://paytm-backend-6q0o.onrender.com/api/v1/user/me", {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          })
+          .then((res) => {
+            axios
+              .get(
+                "https://paytm-backend-6q0o.onrender.com/api/v1/account/balance",
+                {
+                  headers: {
+                    Authorization: "Bearer " + token,
+                  },
+                }
+              )
+              .then((res) => {
+                console.log("balance fetched");
+                setBalance(res.data.balance);
+              })
+              .catch((e) => alert(e.response.data.msg));
+          })
+          .catch((e) => {
+            navigate("/signin");
+            alert(e.response.data.msg);
+          });
       })
+      .catch((e) => {
+        console.log(e);
+        alert("Please wait for a minute,the server is restarting!");
+      });
+  }, []);
 
-      .catch((e) => console.log(e));
+  useEffect(() => {
+    axios
+      .get("https://paytm-backend-6q0o.onrender.com")
+      .then(() => {
+        axios
+          .get(
+            "https://paytm-backend-6q0o.onrender.com/api/v1/user/bulk?filter=" +
+              filter,
+            {
+              headers: {
+                Authorization: "Bearer " + token,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res);
+            setUsers(res.data.user);
+            setLoading(false);
+          })
+          .catch((e) => alert(e.response.data.msg));
+      })
+      .catch((e) =>
+        console.log("Please wait for a minute,the server is restarting!")
+      );
   }, [filter]);
   return (
     <div className="bg-white w-full flex flex-col gap-1 rounded py-2 px-4 h-full relative">

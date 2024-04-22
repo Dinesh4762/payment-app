@@ -1,16 +1,16 @@
 const express = require("express");
 const z = require("zod");
-const {User,Account} = require("../db");
+const { User, Account } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 const authMiddleware = require("../middleware");
 const router = express.Router();
 
-router.get("/me",authMiddleware,(req,res)=>{
+router.get("/me", authMiddleware, (req, res) => {
   res.status(200).json({
-    authenticated: "true"
-  })
-})
+    authenticated: "true",
+  });
+});
 router.post("/signup", async (req, res) => {
   const inputSchema = z.object({
     username: z.string().email(),
@@ -18,7 +18,7 @@ router.post("/signup", async (req, res) => {
     lastName: z.string(),
     password: z.string(),
   });
-  console.log(req.body)
+  console.log(req.body);
   const response = inputSchema.safeParse(req.body);
   if (!response.success) {
     return res.status(411).json({ msg: "invalid Inputs" });
@@ -29,7 +29,7 @@ router.post("/signup", async (req, res) => {
   });
   if (userExists) {
     return res.status(411).json({
-      mssg: "username exists",
+      msg: "username exists",
     });
   }
   try {
@@ -47,65 +47,65 @@ router.post("/signup", async (req, res) => {
     // console.log(user)
     const token = jwt.sign({ userId: user._id }, JWT_SECRET);
     res.status(200).json({
-      mssg: "user created successfully!",
+      msg: "user created successfully!",
       token: token,
-      firstName: user.firstName
+      firstName: user.firstName,
     });
   } catch (error) {
     res.status(411).json({
-      error: error,
+      msg: error,
     });
   }
 });
-router.post("/signin", async (req,res)=>{
-  // inputs check 
-   const inputSchema = z.object({
-     username: z.string().email(),
-     password: z.string(),
-   }); 
-   const {success} = inputSchema.safeParse(req.body);
-   if(!success){
-        return res.status(411).json({ msg: "invalid inputs buddy!" });
-   }
+router.post("/signin", async (req, res) => {
+  // inputs check
+  const inputSchema = z.object({
+    username: z.string().email(),
+    password: z.string(),
+  });
+  const { success } = inputSchema.safeParse(req.body);
+  if (!success) {
+    return res.status(411).json({ msg: "invalid inputs buddy!" });
+  }
   //  username check
-    const userCheck = await User.findOne({
-        username: req.body.username 
-    })
-    if(!userCheck){
-        return res.status(411).json({msg: "signup first!"})
-    }
-    // if username is correct but password is incorrect!
-    const passwordCheck = await User.findOne({
-      username: req.body.username,
-      password: req.body.password
-    });
-    if (!passwordCheck) {
-      return res.status(411).json({ msg: "check your password!" });
-    }
-    console.log(passwordCheck);
+  const userCheck = await User.findOne({
+    username: req.body.username,
+  });
+  if (!userCheck) {
+    return res.status(411).json({ msg: "signup first!" });
+  }
+  // if username is correct but password is incorrect!
+  const passwordCheck = await User.findOne({
+    username: req.body.username,
+    password: req.body.password,
+  });
+  if (!passwordCheck) {
+    return res.status(411).json({ msg: "check your password!" });
+  }
+  console.log(passwordCheck);
 
-    const token = jwt.sign(
-      { userId: passwordCheck._id},
-      JWT_SECRET
-    );
-    res.status(200).json({token,firstName: passwordCheck.firstName})
+  const token = jwt.sign({ userId: passwordCheck._id }, JWT_SECRET);
+  res.status(200).json({ token, firstName: passwordCheck.firstName });
 });
-router.put("/",authMiddleware,async (req,res)=>{
+router.put("/", authMiddleware, async (req, res) => {
   const inputSchema = z.object({
     password: z.string().optional(),
     firstName: z.string().optional(),
-    lastName: z.string().optional()
-  })
-  const {success} = inputSchema.safeParse(req.body);
-  if(!{success}){
-    return res.status(411).json({msg:"Invalid Inputs!"})
+    lastName: z.string().optional(),
+  });
+  const { success } = inputSchema.safeParse(req.body);
+  if (!{ success }) {
+    return res.status(411).json({ msg: "Invalid Inputs!" });
   }
-  await User.updateOne({
-    _id: req.userId
-  },req.body)
-  res.status(200).json({msg:"profile updated!"})
-})
-router.get("/bulk",authMiddleware, async (req, res) => {
+  await User.updateOne(
+    {
+      _id: req.userId,
+    },
+    req.body
+  );
+  res.status(200).json({ msg: "profile updated!" });
+});
+router.get("/bulk", authMiddleware, async (req, res) => {
   const filter = req.query.filter || "";
   // console.log(filter);
   const users = await User.find({
@@ -122,7 +122,7 @@ router.get("/bulk",authMiddleware, async (req, res) => {
       },
     ],
   });
-  const filteredUsers = users.filter((user)=> user._id != req.userId )
+  const filteredUsers = users.filter((user) => user._id != req.userId);
 
   res.json({
     length: filteredUsers.length,
