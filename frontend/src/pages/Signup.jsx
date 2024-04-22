@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -10,7 +10,12 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+
   const onclickHandle = () => {
+    if (!username || !password) {
+      alert("inputs are required buddy!");
+      return;
+    }
     axios
       .post("https://paytm-backend-6q0o.onrender.com/api/v1/user/signup", {
         username,
@@ -29,7 +34,6 @@ const Signup = () => {
         }
       })
       .catch((e) => console.log(e));
-    
   };
   return (
     <div className="bg-white max-w-[350px] flex flex-col gap-1 items-center rounded py-2 px-4">
@@ -71,7 +75,7 @@ const Signup = () => {
         <label className="flex flex-col grow ">
           Password
           <input
-          value={password}
+            value={password}
             type="password"
             className="border px-2 py-1 rounded"
             placeholder="you cant see me"

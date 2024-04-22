@@ -17,7 +17,7 @@ const Send = () => {
       onClick={() => navigate("/dashboard")}
     >
       <div
-        className="bg-white rounded px-4 py-3 flex flex-col gap-3 w-[300px] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[300]"
+        className="bg-white rounded px-4 py-3 flex flex-col gap-3 w-[325px] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[300]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="text-xl font-semibold self-center">Send Money</div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -7,7 +7,33 @@ const Signin = () => {
   const [password, setPassword] = useState("");
  const navigate = useNavigate();
 
+ useEffect(() => {
+   axios.get("https://paytm-backend-6q0o.onrender.com");
+   const token = localStorage.getItem("token");
+   console.log(token) 
+   if (!token) {
+     return;
+   }
+   axios
+     .get("https://paytm-backend-6q0o.onrender.com/api/v1/user/me", {
+       headers: {
+         Authorization: "Bearer " + token,
+       },
+     })
+     .then((res) => {
+       navigate("/dashboard");
+     })
+     .catch((e) => {
+      console.log(e)
+      alert(e?.response.data.msg)
+     });
+ }, []);
+
   const onClickHandler = () => {
+    if(!username || !password){
+      alert("inputs are required buddy!");
+      return;
+    }
     axios
       .post("https://paytm-backend-6q0o.onrender.com/api/v1/user/signin", {
         username,
@@ -42,6 +68,7 @@ const Signin = () => {
             onChange={(e) => {
               setUsername(e.target.value);
             }}
+            required
           />
         </label>
         <label className="flex flex-col  gap-1 grow">
@@ -52,6 +79,7 @@ const Signin = () => {
             placeholder="cant see me bruh"
             className="rounded border px-2 py-1"
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </label>
       </div>
