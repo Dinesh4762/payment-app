@@ -93,7 +93,7 @@ const Signup = () => {
       </button>
       <p className="text-sm py-2">
         Already have an account brother?
-        <Link to="/signin" className="underline cursor-pointer">
+        <Link to="/" className="underline cursor-pointer">
           Signin
         </Link>
       </p>

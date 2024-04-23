@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/me", authMiddleware, (req, res) => {
   res.status(200).json({
-    authenticated: "true",
+    authenticated: true,
   });
 });
 router.post("/signup", async (req, res) => {

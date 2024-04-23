@@ -30,7 +30,7 @@ const Signin = () => {
       });
    })
    .catch((e)=>{
-    alert("Please wait for a minute,the server is restarting!")
+    alert("Please wait for a 15-20s,the server is restarting!")
    })
    
  }, []);

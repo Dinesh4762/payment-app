@@ -15,7 +15,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!token) {
-      navigate("/signin");
+      navigate("/");
       return; 
     }
     axios
