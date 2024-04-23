@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
-const {mongoPass} = require("./config")
-  mongoose.connect(
-  `mongodb+srv://dineshkumar62:${mongoPass}.mongodb.net/Paytm`
-);
+
+mongoose.connect(process.env.MONGO_URL);
 
 const User = mongoose.model("Users", {
   username: {

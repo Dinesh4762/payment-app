@@ -50,7 +50,7 @@ const Dashboard = () => {
       })
       .catch((e) => {
         console.log(e);
-        alert("Please wait for a minute,the server is restarting!");
+        alert("Please wait for a 15-20s,the server is restarting!");
       });
   }, []);
 
@@ -69,14 +69,14 @@ const Dashboard = () => {
             }
           )
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             setUsers(res.data.user);
             setLoading(false);
           })
           .catch((e) => alert(e.response.data.msg));
       })
       .catch((e) =>
-        console.log("Please wait for a minute,the server is restarting!")
+        console.log("Please wait for 15-20s minute,the server is restarting!")
       );
   }, [filter]);
   return (

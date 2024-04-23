@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const rootRouter = require("./routes/index");
 const cors = require("cors");
@@ -16,6 +17,8 @@ app.use("/api/v1", rootRouter);
 app.get("/", (req, res) => {
   res.status(200).send("Hello, Bhai!");
 });
-app.listen(3000, () => {
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
   console.log("server started!");
+  console.log(process.env.MONGO_URL)
 });
