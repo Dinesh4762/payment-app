@@ -13,7 +13,7 @@ function App() {
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/dashboard" element={<Dashboard />}></Route>
         <Route path="/send" element={<Send />}></Route>
-        <Route path="/" element={<Navigate to="/signin"/>}></Route>
+        <Route path="/" element={<Navigate to="z/signin"/>}></Route>
       </Routes> 
     </div>
   );

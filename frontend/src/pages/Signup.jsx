@@ -32,7 +32,7 @@ const Signup = () => {
         }
       })
       .catch((e) => {
-        console.log(e.response.data.msg);
+        console.log(e?.response.data.msg);
         alert(e.response.data.msg);
       });
   };

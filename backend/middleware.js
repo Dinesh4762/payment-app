@@ -16,6 +16,6 @@ function authMiddleware(req,res,next){
       authenticated: "false",
       msg:"Authorization failed! Sign in again."})
    }
-
+    
 }
 module.exports = authMiddleware;

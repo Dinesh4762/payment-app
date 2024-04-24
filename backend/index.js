@@ -4,13 +4,7 @@ const rootRouter = require("./routes/index");
 const cors = require("cors");
 const app = express();
 
-app.use(
-  cors({
-    origin: "https://paytm-app-basic.vercel.app",
-    methods: "GET,PUT,POST, DELETE,PATCH,HEAD",
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use("/api/v1", rootRouter);
 
@@ -20,5 +14,4 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("server started!");
-  console.log(process.env.MONGO_URL)
 });
