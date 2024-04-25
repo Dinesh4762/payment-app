@@ -1,17 +1,20 @@
 import React, { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import loader from '../assets/loader.svg' 
 
 const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(true);
  const navigate = useNavigate();
  const token = localStorage.getItem("token");
 
  useEffect(() => {
    axios.get("https://paytm-backend-6q0o.onrender.com")
    .then((res)=>{
-    console.log(token);
+    // console.log(token);
+    setLoading(false)
     if (!token) {
       return;
     }
@@ -30,7 +33,7 @@ const Signin = () => {
       });
    })
    .catch((e)=>{
-    alert("Please wait for a 15-20s,the server is restarting!")
+    alert("Server is down!!");
    })
    
  }, []);
@@ -57,7 +60,12 @@ const Signin = () => {
         alert(e.response.data.msg);
       });
   };
-  return (
+  return loading ? (
+    <div className="bg-white w-full h-full flex flex-col gap-1 justify-center items-center">
+      <img src={loader} alt="loading" className=" mx-auto" />
+      <p>server is restarting! please bear it for 20sec 😥</p>
+    </div>
+  ) : (
     <div className="bg-white max-w-[350px] flex flex-col gap-1 items-center rounded py-2 px-4">
       <div className="text-3xl pt-5 font-semibold">Signin</div>
       <div className="text-grey">Enter you credentials</div>

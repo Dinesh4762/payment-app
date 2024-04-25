@@ -3,12 +3,14 @@ import User from "../components/User";
 import loader from "../assets/loader.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Popup from "../components/Popup";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
   const [balance, setBalance] = useState();
+  const [popup, setPopup] = useState(false);
   const accountOwner = localStorage.getItem("firstName");
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -16,7 +18,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!token) {
       navigate("/");
-      return; 
+      return;
     }
     axios
       .get("https://paytm-backend-6q0o.onrender.com")
@@ -28,6 +30,8 @@ const Dashboard = () => {
             },
           })
           .then((res) => {
+            console.log(res)
+            localStorage.setItem("firstName", res.data.firstName);
             axios
               .get(
                 "https://paytm-backend-6q0o.onrender.com/api/v1/account/balance",
@@ -50,7 +54,7 @@ const Dashboard = () => {
       })
       .catch((e) => {
         console.log(e);
-        alert("Please wait for a 15-20s,the server is restarting!");
+        alert("Server is down!");
       });
   }, []);
 
@@ -75,21 +79,26 @@ const Dashboard = () => {
           })
           .catch((e) => alert(e.response.data.msg));
       })
-      .catch((e) =>
-        console.log("Please wait for 15-20s minute,the server is restarting!")
-      );
+      .catch((e) => console.log("Server is down!"));
   }, [filter]);
   return (
     <div className="bg-white w-full flex flex-col gap-1 rounded py-2 px-4 h-full relative">
+      {/* Popup */}
+      {popup && (
+        <Popup setPopup={setPopup}/>
+      )}
       {/* header  */}
-      <div className="border-b flex justify-between items-center py-2">
+      <div className="border-b flex justify-between items-center py-2 relative">
         <div className="text-xl font-semibold">Paytm Bank</div>
-        <div className="flex text-base items-center gap-3">
-          Hello,{accountOwner}
+        <div className="flex text-sm items-center gap-3">
+          Hello, {accountOwner}
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAyMjeDxqvJ0PjFclydxM5x19MqLb1JcSb4A&usqp=CAU"
             alt="profile"
-            className="w-8 h-18 rounded-full"
+            className="w-8 h-8 rounded-full"
+            onClick={() => {
+              setPopup(true);
+            }}
           />
         </div>
       </div>
@@ -113,7 +122,10 @@ const Dashboard = () => {
         />
         <div className="overflow-y-auto min-h-[400px] mt-2">
           {loading ? (
-            <img src={loader} alt="loading" className="my-10 mx-auto" />
+            <>
+            <img src={loader} alt="loading" className="mt-10 mx-auto" />
+            <p className="text-sm text-center font-medium">connecting to server... (could take 25-30 seconds)</p>
+            </>
           ) : (
             users.map((user) => <User user={user} key={user._id}></User>)
           )}
