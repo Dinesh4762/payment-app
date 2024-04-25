@@ -2,7 +2,7 @@ import React from 'react'
 
 const Input = ({label,value, onChange}) => {
   return (
-    <label className="flex flex-col gap-1">
+    <label className="flex flex-col gap-1 ml-14 ">
       <span className='font-medium'>{label}</span>
       <input
         className="border rounded outline-none px-2 py-1 w-[80%] min-w-[60%]"

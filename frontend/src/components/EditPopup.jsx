@@ -44,7 +44,7 @@ const EditPopup = ({setEditPopup}) => {
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="bg-white px-3 py-5 w-[350px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-md rounded-md flex flex-col gap-3"
+      className="bg-zinc-100 px-3 py-5 w-[350px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-md rounded-md flex flex-col gap-3"
     >
       <p className="font-semibold text-2xl text-center border-b pb-2">
         Edit Profile
@@ -53,7 +53,7 @@ const EditPopup = ({setEditPopup}) => {
       <Input label={"First Name"} value={firstName} onChange={setfirstName}/>
       <Input label={"Last Name"} value={lastName} onChange={setlastName}/>
 
-      <div className="flex gap-4 ml-auto mt-3">
+      <div className="flex gap-4 mx-auto mt-3">
         <button className="bg-white text-black scale-100 active:scale-90 transition-all duration-300 ease-out rounded w-[100px] self-center hover:bg-grey/10 border" onClick={() => setEditPopup(false)}>
           Cancel
         </button>
