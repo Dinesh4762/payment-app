@@ -24,7 +24,7 @@ router.post("/transfer", authMiddleware, async (req, res) => {
     session
   );
 
-  if (!account || account.balance < amount) {
+  if (!account || account.balance < amount || amount <= 0) {
     await session.abortTransaction();
     return res.status(400).json({
       success: false,
