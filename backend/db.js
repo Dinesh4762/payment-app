@@ -15,7 +15,7 @@ const User = mongoose.model("Users", {
   password: {
     type: String,
     required: true,
-    minLength: 1,
+    minLength: 6,
   },
   firstName: {
     type: String,
