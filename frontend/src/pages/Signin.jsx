@@ -50,7 +50,7 @@ const Signin = () => {
       })
       .then((res) => {
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("firstName", res.data.firstName);
+        localStorage.setItem("firstName", "User");
         navigate("/dashboard");
         setUsername("");
         setPassword("");

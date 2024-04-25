@@ -10,7 +10,6 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-
   const onclickHandle = () => {
     if (!username || !password) {
       alert("inputs are required buddy!");
@@ -23,17 +22,19 @@ const Signup = () => {
         firstName,
         lastName,
       })
-      .then((response) => {
-        if (response.data.token) {
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("firstName", response.data.firstName);
+      .then((res) => {
+        // console.log(res);
+        if (res.data.token) {
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("firstName", "User");
           console.log("user created");
           navigate("/dashboard");
         }
       })
       .catch((e) => {
-        console.log(e?.response.data.msg);
-        alert(e.response.data.msg);
+        console.log(e);
+        const error = e.response.data.msg.message || e.response.data.msg;
+        alert(error);
       });
   };
   return (

@@ -19,8 +19,9 @@ router.post("/signup", async (req, res) => {
     lastName: z.string(),
     password: z.string(),
   });
-  console.log(req.body);
+  //console.log(req.body);
   const response = inputSchema.safeParse(req.body);
+  //console.log(response);
   if (!response.success) {
     return res.status(411).json({ msg: "invalid Inputs" });
   }
@@ -52,6 +53,7 @@ router.post("/signup", async (req, res) => {
       token: token,
     });
   } catch (error) {
+    console.log(error)
     res.status(411).json({
       msg: error,
     });
