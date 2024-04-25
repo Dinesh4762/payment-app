@@ -5,8 +5,10 @@ const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middleware");
 const router = express.Router();
 
-router.get("/me", authMiddleware, (req, res) => {
+router.get("/me", authMiddleware, async(req, res) => {
+  const user = await User.findOne({ _id: req.userId })
   res.status(200).json({
+    firstName: user.firstName,
     authenticated: true,
   });
 });
@@ -48,7 +50,6 @@ router.post("/signup", async (req, res) => {
     res.status(200).json({
       msg: "user created successfully!",
       token: token,
-      firstName: user.firstName,
     });
   } catch (error) {
     res.status(411).json({
@@ -84,7 +85,7 @@ router.post("/signin", async (req, res) => {
   console.log(passwordCheck);
 
   const token = jwt.sign({ userId: passwordCheck._id }, process.env.JWT_SECRET);
-  res.status(200).json({ token, firstName: passwordCheck.firstName });
+  res.status(200).json({ token});
 });
 router.put("/", authMiddleware, async (req, res) => {
   const inputSchema = z.object({
@@ -96,13 +97,16 @@ router.put("/", authMiddleware, async (req, res) => {
   if (!{ success }) {
     return res.status(411).json({ msg: "Invalid Inputs!" });
   }
-  await User.updateOne(
+   const updated = await User.updateOne(
     {
       _id: req.userId,
     },
-    req.body
+    req.body,
+    {
+      new: true,
+    }
   );
-  res.status(200).json({ msg: "profile updated!" });
+  res.status(200).json({ msg: "profile updated!",updated });
 });
 router.get("/bulk", authMiddleware, async (req, res) => {
   const filter = req.query.filter || "";
