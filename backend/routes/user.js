@@ -84,7 +84,7 @@ router.post("/signin", async (req, res) => {
   if (!passwordCheck) {
     return res.status(411).json({ msg: "check your password!" });
   }
-  console.log(passwordCheck);
+  // console.log(passwordCheck);
 
   const token = jwt.sign({ userId: passwordCheck._id }, process.env.JWT_SECRET);
   res.status(200).json({ token});

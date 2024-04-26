@@ -4,47 +4,48 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
-const EditPopup = ({setEditPopup}) => {
+const EditPopup = ({ setEditPopup }) => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
 
   const onClickHandler = () => {
-     if(password || firstName || lastName){
-        const changedInputs = {};
-        if(password){
-            changedInputs.password = password;
-        }
-        if(firstName){
-            changedInputs.firstName = firstName;
-        }
-        if(lastName){
-            changedInputs.lastName = lastName;
-        }
-        console.log(changedInputs);
-         axios
-           .put(
-             "https://paytm-backend-6q0o.onrender.com/api/v1/user",
-             changedInputs,
-             {
-               headers: {
-                 Authorization: `Bearer ${localStorage.getItem("token")}`,
-               },
-             }
-           )
-           .then(({ data }) => {
-             setEditPopup(false);
-             toast.success("profile updated successfully");
-             navigate("/dashboard");
-           })
-           .catch((e) => {
-             toast.error(e.response.data.msg);
-           });
-     } else{
-         toast.error("inputs are required");
-     }
-  }
+    if (password || firstName || lastName) {
+      const changedInputs = {};
+      if (password) {
+        changedInputs.password = password;
+      }
+      if (firstName) {
+        changedInputs.firstName = firstName;
+      }
+      if (lastName) {
+        changedInputs.lastName = lastName;
+      }
+      console.log(changedInputs);
+      axios
+        .put(
+          "https://paytm-backend-6q0o.onrender.com/api/v1/user",
+          changedInputs,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then(({ data }) => {
+          toast.success("profile updated successfully");
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        })
+        .catch((e) => {
+          toast.error(e.response.data.msg);
+        });
+    } else {
+      toast.error("inputs are required");
+    }
+  };
   return (
     <div
       onClick={(e) => e.stopPropagation()}
