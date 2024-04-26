@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import loader from '../assets/loader.svg'
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
-
+import { toast } from "sonner";
 const Send = () => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ const Send = () => {
           disabled={loading}
           onClick={() => {
             if(!amount){
-              alert("Amount cannot be null!")
+              toast.error("Amount cannot be null!")
               return;
             }
             setLoading(true);
@@ -63,14 +63,16 @@ const Send = () => {
                 if (res.data.success) {
                   setLoading(false);
                   setAmount("");
-                  alert("payment done!");
-                  navigate("/dashboard")
+                  toast.success("payment done!");
+                  setTimeout(() => {
+                    navigate("/dashboard");
+                  }, 1000);
                 }
               })
               .catch((e) => {
                 console.log(e)
                 setLoading(false);
-                alert(e.response.data.msg);
+                toast.error(e.response.data.msg);
               });
           }}
         >{

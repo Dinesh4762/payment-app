@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import {toast} from "sonner";
 
 const Signup = () => {
   const [firstName, setfirstName] = useState("");
@@ -11,8 +12,9 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const onclickHandle = () => {
-    if (!username || !password) {
-      alert("inputs are required buddy!");
+    if (!username || !password || !firstName || !lastName) {
+      toast.error("inputs are required buddy!");
+      // alert("inputs are required buddy!");
       return;
     }
     axios
@@ -28,13 +30,14 @@ const Signup = () => {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("firstName", "User");
           console.log("user created");
+          toast.success("Signed in! ");
           navigate("/dashboard");
         }
       })
       .catch((e) => {
         console.log(e);
         const error = e.response.data.msg.message || e.response.data.msg;
-        alert(error);
+        toast.error(error);
       });
   };
   return (

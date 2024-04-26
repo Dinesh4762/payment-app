@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import loader from '../assets/loader.svg' 
-
+import { toast } from "sonner";
 const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -29,11 +29,11 @@ const Signin = () => {
       })
       .catch((e) => {
         console.log(e.response.data.msg);
-        alert(e.response.data.msg);
+        toast.error(e.response.data.msg);
       });
    })
    .catch((e)=>{
-    alert("Server is down!!");
+    toast.error("Server is down!!");
    })
    
  }, []);
@@ -51,13 +51,14 @@ const Signin = () => {
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("firstName", "User");
+        toast.success("Signed in!");
         navigate("/dashboard");
         setUsername("");
         setPassword("");
       })
       .catch((e) => {
         console.log(e.response.data.msg);
-        alert(e.response.data.msg);
+        toast.error(e.response.data.msg);
       });
   };
   return loading ? (

@@ -1,11 +1,13 @@
 import React,{useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import EditPopup from './EditPopup';
+import { toast } from 'sonner';
 
 const Popup = ({setPopup}) => {
     const navigate = useNavigate();
     const [editPopup, setEditPopup] = useState(false);
   return (
+    // outer wrapper
     <div
       className="absolute inset-0 z-50 w-full h-full"
       onClick={() => setPopup(false)}
@@ -29,6 +31,7 @@ const Popup = ({setPopup}) => {
           className="hover:bg-zinc-400/25 cursor-pointer px-4 py-2 text-zinc-700 rounded"
           onClick={() => {
             localStorage.removeItem("token");
+            toast.success("Signed Out");
             navigate("/");
           }}
         >

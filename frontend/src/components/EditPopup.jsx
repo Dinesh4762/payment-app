@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Input from "./Input";
 import axios from "axios";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const EditPopup = ({setEditPopup}) => {
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
@@ -32,13 +35,14 @@ const EditPopup = ({setEditPopup}) => {
            )
            .then(({ data }) => {
              setEditPopup(false);
-             alert("profile updated successfully");
+             toast.success("profile updated successfully");
+             navigate("/dashboard");
            })
            .catch((e) => {
-             alert(e.response.data.msg);
+             toast.error(e.response.data.msg);
            });
      } else{
-         alert("inputs are required");
+         toast.error("inputs are required");
      }
   }
   return (

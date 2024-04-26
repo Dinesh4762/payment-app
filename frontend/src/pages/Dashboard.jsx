@@ -4,6 +4,7 @@ import loader from "../assets/loader.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Popup from "../components/Popup";
+import { toast } from "sonner";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -30,7 +31,7 @@ const Dashboard = () => {
             },
           })
           .then((res) => {
-            console.log(res)
+            // console.log(res)
             localStorage.setItem("firstName", res.data.firstName);
             axios
               .get(
@@ -45,16 +46,16 @@ const Dashboard = () => {
                 console.log("balance fetched");
                 setBalance(res.data.balance);
               })
-              .catch((e) => alert(e.response.data.msg));
+              .catch((e) => toast.error(e.response.data.msg));
           })
           .catch((e) => {
             navigate("/signin");
-            alert(e.response.data.msg);
+            toast.error(e.response.data.msg);
           });
       })
       .catch((e) => {
         console.log(e);
-        alert("Server is down!");
+        toast.error("Server is down!");
       });
   }, []);
 
@@ -77,7 +78,7 @@ const Dashboard = () => {
             setUsers(res.data.user);
             setLoading(false);
           })
-          .catch((e) => alert(e.response.data.msg));
+          .catch((e) => toast.error(e.response.data.msg));
       })
       .catch((e) => console.log("Server is down!"));
   }, [filter]);
@@ -107,7 +108,7 @@ const Dashboard = () => {
       <div className="font-semibold mt-3 text-lg ">
         Balance: ₹
         <span className="border-b-grey border-b-2 border-dotted ml-1 p-0">
-          {balance}
+          {balance || "XXXX"}
         </span>
       </div>
 
@@ -120,7 +121,8 @@ const Dashboard = () => {
           placeholder="Search Users..."
           onChange={(e) => setFilter(e.target.value)}
         />
-        <div className="overflow-y-auto min-h-[400px] mt-2">
+        <span className="text-xs font-medium border-b-2 border-red-300 border-dotted self-start">Showing {users.length} results</span>
+        <div className="overflow-y-auto min-h-[395px]">
           {loading ? (
             <>
             <img src={loader} alt="loading" className="mt-10 mx-auto" />
